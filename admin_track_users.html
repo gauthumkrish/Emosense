@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Redirecting...</title>
+    <style>
+        body {
+            font-family: Georgia, sans-serif;
+            background-color: #f0f0f0;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+        p {
+            font-size: 20px;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <p>This page will redirect to http://127.0.0.1:5006 shortly.</p>
+
+    <script>
+        setTimeout(function() {
+            window.location.href = 'http://127.0.0.1:5006';
+        }, 1000); // Redirect after 1 second
+    </script>
+</body>
+</html>

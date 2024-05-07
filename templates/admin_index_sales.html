@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Company Sales</title>
+    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+    <style>
+        /* CSS styles */
+        body {
+            font-family: Georgia, 'Times New Roman', Times, serif, sans-serif;
+            background-color: #f0f0f0; /* Light gray background */
+            margin: 0;
+            padding: 0;
+            background-image: url('/static/bg1-60.jpg');
+            background-size: cover;
+            background-position: center;
+            opacity: 1;
+        }
+        h1 {
+            text-align: center;
+            color: #333; /* Dark gray */
+            margin-top: 20px;
+        }
+        .container {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start; /* Align items at the top */
+            width: 80%;
+            margin: 20px auto;
+            background-color: #fff; /* White background */
+            border-radius: 10px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.1); /* Soft shadow */
+            overflow: hidden;
+        }
+        .sales-info,
+        .chart-container,
+        .edit-form {
+            padding: 20px;
+            border-radius: 10px;
+        }
+        .sales-info {
+            width: 30%;
+            max-height: 400px; /* Maximum height of the list container */
+            overflow-y: auto; /* Enable vertical scrolling */
+            border-right: 2px solid #ddd; /* Light gray border */
+        }
+        .chart-container {
+            width: 65%; /* Adjusted width */
+        }
+        .edit-form {
+            width: 1479px; /* Full width */
+            text-align: center;
+        }
+        .edit-form label {
+            display: inline;
+            margin-bottom: 10px;
+            font-weight: bold;
+            color: #555; /* Dark gray */
+        }
+        .edit-form select,
+        .edit-form input[type="number"],
+        .edit-form button {
+            margin-bottom: 10px;
+            padding: 8px 12px;
+            border: 1px solid #ccc; /* Light gray border */
+            border-radius: 5px;
+            background-color: #f9f9f9; /* Light gray background */
+            color: #333; /* Dark gray text */
+            font-size: 14px;
+        }
+        .edit-form button {
+            background-color: #008000; /* Blue button */
+            color: #fff; /* White text */
+            cursor: pointer;
+        }
+        .edit-form button:hover {
+            background-color: #008000; /* Darker blue on hover */
+        }
+    </style>
+</head>
+<body>
+    <h1>Company Sales</h1>
+    <div class="container">
+        <div class="sales-info">
+            <h2>Sales Information</h2>
+            <ul>
+                {% for index in range(company_names | length) %}
+                    <li>{{ company_names[index] }}: {{ sales_counts[index] }}</li>
+                {% endfor %}
+            </ul>
+        </div>
+        <div class="chart-container">
+            <div id="chart"></div>
+        </div>
+    </div>
+
+    <!-- Form for editing data -->
+    <div class="edit-form">
+        <h2>Edit Data</h2>
+        <form action="/update" method="post" onsubmit="updateData(event)">
+            <label for="company">Company Name:</label>
+            <select name="company" id="company">
+                {% for company in company_names %}
+                    <option value="{{ company }}">{{ company }}</option>
+                {% endfor %}
+            </select>
+            <label for="sales">New Sales Count:</label>
+            <input type="number" name="sales" id="sales" required>
+            <button type="submit">Update</button>
+        </form>
+    </div>
+
+    <script>
+        var companyNames = {{ company_names | tojson }};
+        var salesCounts = {{ sales_counts | tojson }};
+
+        var data = [{
+            x: companyNames,
+            y: salesCounts,
+            type: 'bar'
+        }];
+
+        var layout = {
+            title: 'Company Sales',
+            xaxis: {
+                title: 'Company Name'
+            },
+            yaxis: {
+                title: 'Number of Sales'
+            }
+        };
+
+        Plotly.newPlot('chart', data, layout);
+
+        function updateData(event) {
+            event.preventDefault(); // Prevent form submission
+            var formData = new FormData(event.target);
+            var company = formData.get('company');
+            var sales = formData.get('sales');
+
+            // Update the list
+            var salesInfo = document.querySelector('.sales-info ul');
+            var listItem = document.createElement('li');
+            listItem.textContent = company + ': ' + sales;
+            salesInfo.appendChild(listItem);
+
+            // Update the graph
+            companyNames.push(company);
+            salesCounts.push(parseInt(sales));
+            Plotly.newPlot('chart', [{ x: companyNames, y: salesCounts, type: 'bar' }], layout);
+        }
+    </script>
+</body>
+</html>

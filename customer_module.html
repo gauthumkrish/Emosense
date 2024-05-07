@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Website</title>
+    <style>
+        body {
+            font-family: Georgia, sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-image: url('bg1.jpeg'); /* Replace 'background.jpg' with your image file */
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            position: relative;
+        }
+        .overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(255, 255, 255, 0.5); /* Adjust opacity here */
+        }
+        .container {
+            text-align: center;
+            z-index: 1;
+            padding: 20px;
+            background-color: rgba(255, 255, 255, 0.3); /* Adjust opacity here */
+            border-radius: 10px; /* Add border radius */
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Add box shadow */
+            animation: slideIn 1s ease forwards; /* Animation */
+        }
+        .logo {
+            position: absolute;
+            top: 30px; /* Adjust top position of the logo */
+            left: 30px; /* Adjust left position of the logo */
+            width: 100px; /* Adjust logo width */
+            z-index: 2; /* Set z-index to -1 */
+        }
+        .button {
+            padding: 15px 30px;
+            font-size: 18px;
+            border: none;
+            background-color: #008000;
+            color: #fff;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: transform 0.3s ease;
+            margin: 10px;
+        }
+        .button:hover {
+            transform: scale(1.1);
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(-50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+    </style>
+</head>
+<body>
+    <img src="logo.png" alt="Logo" class="logo">
+    <div class="overlay"></div>
+    <div class="container">
+        <button class="button" onclick="window.location.href='company_ranking_wordcloud.html'">Search Company</button>
+        <button class="button" onclick="window.location.href='company_ranking.html'">Ranking Company</button>
+    </div>
+</body>
+</html>
